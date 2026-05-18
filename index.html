@@ -67,8 +67,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 
 /* TABS */
 .tabs{display:flex;background:var(--card);border-bottom:2px solid var(--sep);position:sticky;top:64px;z-index:90;}
-.tab{flex:1;font-family:var(--font);font-size:.82rem;font-weight:800;color:var(--text3);padding:.75rem .2rem;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;position:relative;}
-.tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+.tab{flex:1;font-family:var(--font);font-size:.88rem;font-weight:900;color:#7dd3fc;padding:.8rem .2rem;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;position:relative;}
+.tab.active{color:#ffffff;border-bottom-color:#38bdf8;}
 .tab-badge{position:absolute;top:6px;right:6px;background:var(--red);color:white;border-radius:10px;font-size:.55rem;font-weight:900;padding:1px 5px;min-width:16px;text-align:center;}
 
 /* CARDS */
@@ -234,7 +234,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 
   <div class="tabs">
     <button class="tab active" onclick="switchTab('orders')">Siparişler<span class="tab-badge" id="openBadge" style="display:none;"></span></button>
-    <button class="tab" onclick="switchTab('new')">+ Yeni</button>
+    <button class="tab" onclick="switchTab('new')">➕ Sipariş Ekle</button>
     <button class="tab" onclick="switchTab('notifs')">Bildirimler<span class="tab-badge" id="notifBadge" style="display:none;"></span></button>
     <button class="tab" id="settingsTab" onclick="openSettings()" style="display:none;">⚙️</button>
   </div>
@@ -305,6 +305,25 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   </div>
 </div>
 
+<!-- GÖNDERİLDİ MODAL -->
+<div class="overlay" id="gonderildiOverlay" onclick="oClose(event,'gonderildiOverlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-hdr"><div class="sheet-title">🚚 Gönderildi</div><button class="sheet-close" onclick="closeSheet('gonderildiOverlay')">✕</button></div>
+    <div class="f-section" style="margin-top:.5rem;">
+      <label class="f-lbl">Gönderim Tarihi</label>
+      <div style="font-size:.8rem;color:var(--text3);font-weight:600;margin-bottom:.5rem;">Siparişin gönderildiği tarihi girin.</div>
+      <div class="f-card"><div class="f-row"><span class="f-ico">📅</span><input type="date" id="gonderildiDate"></div></div>
+    </div>
+    <div class="f-section">
+      <label class="f-lbl">Gönderim Notu (opsiyonel)</label>
+      <div class="f-card"><div class="f-row"><span class="f-ico">📝</span><textarea id="gonderildiNote" placeholder="Kargo firması, takip no, vb..." style="height:56px;resize:none;"></textarea></div></div>
+    </div>
+    <input type="hidden" id="gonderildiOrderId">
+    <button class="submit-btn" style="background:var(--purple);color:white;" onclick="confirmGonderildi()">🚚 Gönderildi Olarak İşaretle</button>
+  </div>
+</div>
+
 <!-- EDIT ORDER OVERLAY -->
 <div class="overlay" id="editOrderOverlay" onclick="oClose(event,'editOrderOverlay')">
   <div class="sheet">
@@ -347,15 +366,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
         <div style="padding:.5rem 1rem .7rem;">
           <button onclick="openAddUser()" style="width:100%;background:var(--blue-bg);color:var(--blue);border:2px solid var(--blue);border-radius:12px;padding:.7rem;font-family:var(--font);font-size:.88rem;font-weight:800;cursor:pointer;">+ Kullanıcı Ekle</button>
         </div>
-      </div>
-      <div style="background:var(--card2);border-radius:var(--radius);border:1.5px solid var(--sep);overflow:hidden;margin-bottom:.8rem;">
-        <div style="padding:.75rem 1rem;font-size:.78rem;font-weight:900;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;border-bottom:1.5px solid var(--sep);">❌ Sipariş İptal</div>
-        <div style="padding:.8rem 1rem;">
-          <div style="font-size:.82rem;color:var(--text3);font-weight:600;margin-bottom:.6rem;">İptal edilecek siparişi seçin. Fabrika sorumlularına bildirim gidecek.</div>
-          <select id="cancelOrderSelect" style="width:100%;background:var(--card);border:2px solid var(--border);border-radius:12px;padding:.7rem 1rem;font-family:var(--font);font-size:.88rem;font-weight:700;color:var(--text);outline:none;margin-bottom:.5rem;"></select>
-          <button onclick="cancelSelectedOrder()" style="width:100%;background:var(--red-bg);color:var(--red);border:2px solid var(--red);border-radius:12px;padding:.7rem;font-family:var(--font);font-size:.88rem;font-weight:800;cursor:pointer;">❌ İptal Et</button>
+        <div style="padding:0 1rem .7rem;">
+          <button onclick="openActivityLog()" style="width:100%;background:var(--purple-bg);color:var(--purple);border:2px solid var(--purple);border-radius:12px;padding:.7rem;font-family:var(--font);font-size:.88rem;font-weight:800;cursor:pointer;">📊 Kullanıcı Aktivitesi</button>
         </div>
       </div>
+
       <div style="text-align:center;font-size:.72rem;color:var(--text3);font-weight:600;padding:.3rem;">Sipariş Sistemi v1</div>
     </div>
   </div>
@@ -598,10 +613,16 @@ function doLogin(){
   document.getElementById('topDot').style.background=u.color;
   document.getElementById('topName').textContent=u.name;
   if(u.role==='yonetici')document.getElementById('settingsTab').style.display='';
-  loadFromServer().then(()=>{renderAll();updateBadges();});
+  sessionStorage.setItem('bs_cur_user',u.id);
+  loadActivity();
+  loadFromServer().then(()=>{renderAll();updateBadges();startPolling();});
+  logActivity('Giriş yapıldı');
 }
 function doLogout(){
+  logActivity('Çıkış yapıldı');
+  stopPolling();
   curUser=null;
+  sessionStorage.removeItem('bs_cur_user');
   document.getElementById('mainApp').style.display='none';
   document.getElementById('loginScreen').style.display='flex';
   buildDD();
@@ -629,12 +650,17 @@ function renderAll(){
 }
 
 function updateBadges(){
-  // Open orders badge
-  const open=orders.filter(o=>o.status!=='hazir').length;
+  const open=orders.filter(o=>o.status!=='hazir'&&o.status!=='gonderildi'&&o.status!=='iptal').length;
   const ob=document.getElementById('openBadge');
   if(ob){ob.style.display=open>0?'':'none';ob.textContent=open;}
-  // Unread notifs
-  const unread=notifs.filter(n=>!n.read&&(curUser&&(curUser.role==='fabrika'||n.toUser===curUser.id))).length;
+  // Okunmamış — sadece benim için olan veya fabrika isem bekleyen silme istekleri
+  const unread=notifs.filter(n=>{
+    if(!n.read){
+      if(curUser&&(curUser.role==='fabrika'||curUser.role==='yonetici'))return true;
+      return n.toUser===curUser?.id;
+    }
+    return false;
+  }).length;
   const nb=document.getElementById('notifBadge');
   if(nb){nb.style.display=unread>0?'':'none';nb.textContent=unread;}
 }
@@ -673,6 +699,7 @@ function buildOrderCard(o){
 
   const itemChips=(o.items||[]).map(i=>`<span class="order-item-chip">${catLabel(i.category)}</span>`).join('');
   const termin=o.termin?`<div class="order-termin">📅 Termin: ${o.termin}${o.terminNote?' — '+o.terminNote:''}</div>`:'';
+  const gonderimInfo=o.gonderimTarihi?`<div style="padding:.3rem 1rem .5rem 1.7rem;font-size:.75rem;font-weight:800;color:var(--purple);">🚚 Gönderim: ${o.gonderimTarihi}${o.gonderimNotu?' — '+o.gonderimNotu:''}</div>`:'';
   // Silme isteği uyarısı
   const deleteWarn=silmeIstegi?`<div style="margin:.3rem 1rem .5rem 1rem;background:var(--red-bg);border:1.5px solid var(--red);border-radius:10px;padding:.5rem .8rem;font-size:.75rem;font-weight:800;color:var(--red);">🗑 Silme onayı bekleniyor — ${o.deleteRequest.by}</div>`:'';
 
@@ -698,8 +725,8 @@ function buildOrderCard(o){
     </div>`;
   } else if((isFabrika||isYonetici)&&o.status==='hazir'){
     actions=`<div class="order-actions">
-      <button class="order-act-btn" style="background:var(--purple);color:white;" onclick="updateStatus('${o.id}','gonderildi')">🚚 Gönderildi</button>
-      ${silmeIstegi&&(isFabrika||isYonetici)?`<button class="order-act-btn" style="background:var(--green);color:white;" onclick="approveDelete('${o.id}')">✅ Silmeyi Onayla</button><button class="order-act-btn" style="background:var(--card2);color:var(--text3);border:1.5px solid var(--border);" onclick="rejectDelete('${o.id}')">❌ Reddet</button>`:''}
+      <button class="order-act-btn" style="background:var(--purple);color:white;" onclick="openGonderildiModal('${o.id}')">🚚 Gönderildi</button>
+      ${silmeIstegi&&(isFabrika||isYonetici)?'<button class="order-act-btn" style="background:var(--green);color:white;" onclick="approveDelete(\''+o.id+'\')">✅ Silmeyi Onayla</button><button class="order-act-btn" style="background:var(--card2);color:var(--text3);border:1.5px solid var(--border);" onclick="rejectDelete(\''+o.id+'\')">❌ Reddet</button>':''}
       <button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button>
     </div>`;
   } else if(canEdit){
@@ -729,6 +756,7 @@ function buildOrderCard(o){
     </div>
     <div class="order-items-preview">${itemChips}</div>
     ${termin}
+    ${gonderimInfo}
     ${deleteWarn}
     ${o.note?`<div style="padding:.3rem 1rem .6rem 1.7rem;font-size:.75rem;color:var(--text3);font-weight:600;">📝 ${o.note}</div>`:''}
     ${actions}
@@ -835,6 +863,34 @@ function confirmAlindi(){
   syncAction('updateOrder',{order:o,prevStatus:prev});
   closeSheet('terminOverlay');renderAll();
   showToast('✅ Sipariş alındı olarak işaretlendi');
+}
+function openGonderildiModal(id){
+  document.getElementById('gonderildiOrderId').value=id;
+  document.getElementById('gonderildiDate').value=todayKey();
+  document.getElementById('gonderildiNote').value='';
+  showSheet('gonderildiOverlay');
+}
+function todayKey(){return new Date().toISOString().slice(0,10);}
+function confirmGonderildi(){
+  const id=document.getElementById('gonderildiOrderId').value;
+  const date=document.getElementById('gonderildiDate').value;
+  const note=document.getElementById('gonderildiNote').value.trim();
+  if(!date){showToast('⚠ Gönderim tarihi giriniz');return;}
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  const prev=o.status;
+  o.status='gonderildi';
+  o.gonderimTarihi=date;
+  o.gonderimNotu=note;
+  o.updatedAt=nowStr();
+  o.timeline=o.timeline||[];
+  o.timeline.push({status:'gonderildi',at:nowStr(),by:curUser.id,byName:curUser.name,gonderimTarihi:date});
+  saveLocal();
+  addNotif(o,'gonderildi');
+  addNotifToFabrika(o,'gonderildi');
+  syncAction('updateOrder',{order:o,prevStatus:prev});
+  logActivity('Sipariş gönderildi: #'+id+' — '+date);
+  closeSheet('gonderildiOverlay');renderAll();
+  showToast('🚚 Sipariş gönderildi olarak işaretlendi');
 }
 function updateStatus(id,newStatus){
   const labels={islemde:'işleme alındı',hazir:'hazır olarak işaretlendi',gonderildi:'gönderildi olarak işaretlendi'};
@@ -1369,6 +1425,51 @@ function saveEditOrder(){
   renderAll();
   showToast('✅ Sipariş güncellendi');
 }
+// ════════════════════════════════════════════
+// AKTİVİTE LOGU
+// ════════════════════════════════════════════
+const KAL='bs_activity';
+let activityLog=[];
+function loadActivity(){try{activityLog=JSON.parse(localStorage.getItem(KAL))||[];}catch(e){activityLog=[];}}
+function logActivity(msg){
+  if(!curUser)return;
+  activityLog.unshift({by:curUser.name,at:nowStr(),ts:Date.now(),msg});
+  activityLog=activityLog.slice(0,500);
+  localStorage.setItem(KAL,JSON.stringify(activityLog));
+}
+function openActivityLog(){
+  loadActivity();
+  const el=document.getElementById('settingsUserList');
+  if(!el)return;
+  el.innerHTML='<div style="padding:.3rem .5rem;max-height:55vh;overflow-y:auto;">'
+    +( activityLog.length?activityLog.slice(0,100).map(a=>`<div style="padding:.5rem .7rem;border-bottom:1px solid var(--sep);font-size:.78rem;"><span style="font-weight:800;color:var(--blue);">${a.by}</span> <span style="color:var(--text3);">${a.at}</span><div style="color:var(--text2);margin-top:2px;">${a.msg}</div></div>`).join(''):'<div style="padding:1rem;text-align:center;color:var(--text3);font-size:.85rem;">Henüz aktivite yok</div>')
+    +'</div><button onclick="renderSettingsUserList()" style="width:100%;padding:.7rem;background:var(--card2);border:none;font-family:var(--font);font-size:.85rem;font-weight:800;color:var(--blue);cursor:pointer;border-top:1px solid var(--sep);">← Kullanıcı Listesine Dön</button>';
+}
+
+// ════════════════════════════════════════════
+// POLLING SYNC — 15sn anlık güncelleme
+// ════════════════════════════════════════════
+let pollTimer=null;
+function startPolling(){
+  stopPolling();
+  pollTimer=setInterval(async()=>{
+    if(!curUser)return;
+    try{
+      const resp=await fetch(GS_URL+'?t='+Date.now());
+      const data=JSON.parse(await resp.text());
+      if(data&&data.orders){
+        const prev=orders.length;
+        orders=data.orders||[];
+        if(data.users&&data.users.length)users=data.users;
+        if(data.notifs&&data.notifs.length)notifs=data.notifs;
+        saveLocal();renderAll();
+        if(orders.length>prev&&prev>0)showToast('🔔 Yeni sipariş geldi!');
+      }
+    }catch(e){}
+  },15000);
+}
+function stopPolling(){if(pollTimer){clearInterval(pollTimer);pollTimer=null;}}
+
 function openSettings(){
   renderSettingsUserList();
   // Fill cancel order select
@@ -1557,6 +1658,21 @@ document.addEventListener('keydown',e=>{
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 }
+// Yenileme sonrası login'e dönmeyi önle
+window.addEventListener('load',()=>{
+  const uid=sessionStorage.getItem('bs_cur_user');
+  if(uid&&!curUser){
+    const u=users.find(x=>x.id===uid);
+    if(u){curUser=u;
+      document.getElementById('loginScreen').style.display='none';
+      document.getElementById('mainApp').style.display='flex';
+      document.getElementById('topDot').style.background=u.color;
+      document.getElementById('topName').textContent=u.name;
+      if(u.role==='yonetici')document.getElementById('settingsTab').style.display='';
+      loadFromServer().then(()=>{renderAll();updateBadges();startPolling();});
+    }
+  }
+});
 
 // ════════════════════════════════════════════
 // INIT
