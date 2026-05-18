@@ -858,8 +858,10 @@ function updateStatus(id,newStatus){
 // NOTIFICATIONS
 // ════════════════════════════════════════════
 function addNotif(order,status){
-  const statusLabels={alinmadi:'Sipariş oluşturuldu',alindi:'Sipariş Alındı',islemde:'Sipariş İşlemde',hazir:'Sipariş Hazır'};
-  const n={
+  const statusLabels={alinmadi:'Sipariş oluşturuldu',alindi:'Sipariş Alındı',islemde:'Sipariş İşlemde',hazir:'Sipariş Hazır',gonderildi:'Sipariş Gönderildi',iptal:'Sipariş İptal Edildi'};
+  // Önce bu siparişin önceki durum bildirimlerini temizle (deleteRequest bildirimleri hariç)
+  notifs=notifs.filter(n=>n.orderId!==order.id||n.type==='deleteRequest');
+  notifs.unshift({
     id:'n'+Date.now(),
     orderId:order.id,
     toUser:order.createdBy,
@@ -870,8 +872,8 @@ function addNotif(order,status){
     at:nowStr(),
     ts:Date.now(),
     read:false,
-  };
-  notifs.unshift(n);notifs=notifs.slice(0,200);
+  });
+  notifs=notifs.slice(0,200);
   saveLocal();updateBadges();
 }
 function renderNotifs(){
@@ -981,7 +983,7 @@ function buildSeffafLastikForm(){
   const opts=SEFFAF_LASTIK_URUNLER.map(u=>`<div class="option-chip" data-val="${u.kod}" onclick="toggleChip('sl_urun','${u.kod}')" style="min-width:120px;">${u.kod}<br><span style="font-size:.65rem;opacity:.7;">${u.olcu}</span></div>`).join('');
   return`
     <div class="f-section"><label class="f-lbl">Ürün Seçimi</label><div class="option-grid" id="sl_urun" style="grid-template-columns:1fr 1fr;">${opts}</div></div>
-    <div class="f-section"><label class="f-lbl">Görünüm</label>${chipGroup('sl_renk',['Buzlu','Cam Gibi','Siyah'])}</div>
+    <div class="f-section"><label class="f-lbl">Varyasyon</label>${chipGroup('sl_renk',['Buzlu','Cam Gibi','Siyah'])}</div>
     <div class="f-section"><label class="f-lbl">Paketleme</label>${chipGroup('sl_paket',['Poşet','Makara'])}</div>
     <div class="f-section"><label class="f-lbl">Sipariş Miktarı</label><div class="f-card"><div class="f-row"><span class="f-ico">📦</span><input type="text" id="sl_miktar" placeholder="Ör: 5 koli, 10 poşet..."></div></div></div>`;
 }
@@ -1063,7 +1065,7 @@ function buildMakaraForm(){
   const opts=MAKARA_URUNLER.map(u=>`<div class="option-chip" data-val="${u.kod}" onclick="toggleChip('mak_urun','${u.kod}')" style="min-width:120px;">${u.kod}<br><span style="font-size:.65rem;opacity:.7;">${u.olcu}</span></div>`).join('');
   return`
     <div class="f-section"><label class="f-lbl">Ürün Seçimi</label><div class="option-grid" id="mak_urun">${opts}</div></div>
-    <div class="f-section"><label class="f-lbl">Görünüm</label>${chipGroup('mak_renk',['Buzlu','Cam Gibi','Siyah','Yarı Buzlu'])}</div>
+    <div class="f-section"><label class="f-lbl">Varyasyon</label>${chipGroup('mak_renk',['Buzlu','Cam Gibi','Siyah','Yarı Buzlu'])}</div>
     <div class="f-section"><label class="f-lbl">Makara Metresi</label>${chipGroup('mak_metre',MAKARA_METRELER)}</div>
     <div class="f-section"><label class="f-lbl">Sipariş Miktarı</label><div class="f-card"><div class="f-row"><span class="f-ico">📦</span><input type="text" id="mak_miktar" placeholder="Ör: 5 makara..."></div></div></div>`;
 }
@@ -1400,16 +1402,34 @@ function cancelSelectedOrder(){
   o.status='iptal';o.updatedAt=nowStr();
   o.timeline=o.timeline||[];
   o.timeline.push({status:'iptal',at:nowStr(),by:curUser.id,byName:curUser.name});
+  o.deleteRequest=null; // varsa silme isteğini de temizle
   saveLocal();
-  // Notify fabrika
-  addNotifToFabrika(o,'iptal');
+  // Bu siparişe ait TÜM eski bildirimleri temizle, yerine iptal bildirimi ekle
+  clearOrderNotifs(id);
+  // Tüm kullanıcılara iptal bildirimi gönder
+  users.forEach(u=>{
+    notifs.unshift({
+      id:'n'+Date.now()+Math.random(),
+      orderId:o.id,toUser:u.id,
+      fromUser:curUser.id,fromName:curUser.name,
+      status:'iptal',label:'Sipariş İptal Edildi',
+      at:nowStr(),ts:Date.now(),read:false,
+    });
+  });
+  notifs=notifs.slice(0,200);
+  saveLocal();updateBadges();
   syncAction('updateOrder',{order:o,prevStatus:prev});
   closeSheet('settingsOverlay');renderAll();
   showToast('❌ Sipariş iptal edildi');
 }
+function clearOrderNotifs(orderId){
+  // Siparişe ait tüm eski bildirimleri sil
+  notifs=notifs.filter(n=>n.orderId!==orderId);
+}
 function addNotifToFabrika(order,status){
   const label={iptal:'Sipariş İptal Edildi',gonderildi:'Sipariş Gönderildi',duzenlendi:'Sipariş Düzenlendi'}[status]||status;
-  // Notify fabrika users
+  // Önce bu siparişe ait aynı türdeki eski bildirimleri temizle
+  notifs=notifs.filter(n=>!(n.orderId===order.id&&n.status===status));
   users.filter(u=>u.role==='fabrika'||u.role==='yonetici').forEach(u=>{
     notifs.unshift({
       id:'n'+Date.now()+Math.random(),
