@@ -665,27 +665,54 @@ function buildOrderCard(o){
   const isFabrika=curUser&&curUser.role==='fabrika';
   const isYonetici=curUser&&curUser.role==='yonetici';
   const isOwner=curUser&&curUser.id===o.createdBy;
-  // Düzenleme: sipariş sahibi veya yönetici, henüz alınmadıysa
   const canEdit=(isOwner||isYonetici)&&o.status==='alinmadi';
+  // Silme isteği gönderilmiş mi?
+  const silmeIstegi=o.deleteRequest&&o.deleteRequest.pending;
+  // Sipariş sahibi/yönetici aktif siparişte silme isteyebilir
+  const canRequestDelete=(isOwner||isYonetici)&&['alindi','islemde','hazir'].includes(o.status)&&!silmeIstegi;
 
   const itemChips=(o.items||[]).map(i=>`<span class="order-item-chip">${catLabel(i.category)}</span>`).join('');
   const termin=o.termin?`<div class="order-termin">📅 Termin: ${o.termin}${o.terminNote?' — '+o.terminNote:''}</div>`:'';
+  // Silme isteği uyarısı
+  const deleteWarn=silmeIstegi?`<div style="margin:.3rem 1rem .5rem 1rem;background:var(--red-bg);border:1.5px solid var(--red);border-radius:10px;padding:.5rem .8rem;font-size:.75rem;font-weight:800;color:var(--red);">🗑 Silme onayı bekleniyor — ${o.deleteRequest.by}</div>`:'';
 
   let actions='';
   if((isFabrika||isYonetici)&&o.status==='alinmadi'){
     actions=`<div class="order-actions">
       <button class="order-act-btn btn-success" onclick="openTermin('${o.id}')">✅ Sipariş Al</button>
       ${canEdit?`<button class="order-act-btn btn-warning" onclick="openEditOrder('${o.id}')">✏️ Düzenle</button>`:''}
+      ${canEdit?`<button class="order-act-btn" style="background:var(--red-bg);color:var(--red);border:1.5px solid var(--red);" onclick="deleteOrder('${o.id}')">🗑 Sil</button>`:''}
       <button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button>
     </div>`;
   } else if((isFabrika||isYonetici)&&o.status==='alindi'){
-    actions=`<div class="order-actions"><button class="order-act-btn btn-warning" onclick="updateStatus('${o.id}','islemde')">⚙️ İşleme Al</button><button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button></div>`;
+    actions=`<div class="order-actions">
+      <button class="order-act-btn btn-warning" onclick="updateStatus('${o.id}','islemde')">⚙️ İşleme Al</button>
+      ${silmeIstegi&&(isFabrika||isYonetici)?`<button class="order-act-btn" style="background:var(--green);color:white;" onclick="approveDelete('${o.id}')">✅ Silmeyi Onayla</button><button class="order-act-btn" style="background:var(--card2);color:var(--text3);border:1.5px solid var(--border);" onclick="rejectDelete('${o.id}')">❌ Reddet</button>`:''}
+      <button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button>
+    </div>`;
   } else if((isFabrika||isYonetici)&&o.status==='islemde'){
-    actions=`<div class="order-actions"><button class="order-act-btn btn-primary" onclick="updateStatus('${o.id}','hazir')">📦 Hazır</button><button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button></div>`;
+    actions=`<div class="order-actions">
+      <button class="order-act-btn btn-primary" onclick="updateStatus('${o.id}','hazir')">📦 Hazır</button>
+      ${silmeIstegi&&(isFabrika||isYonetici)?`<button class="order-act-btn" style="background:var(--green);color:white;" onclick="approveDelete('${o.id}')">✅ Silmeyi Onayla</button><button class="order-act-btn" style="background:var(--card2);color:var(--text3);border:1.5px solid var(--border);" onclick="rejectDelete('${o.id}')">❌ Reddet</button>`:''}
+      <button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button>
+    </div>`;
   } else if((isFabrika||isYonetici)&&o.status==='hazir'){
-    actions=`<div class="order-actions"><button class="order-act-btn" style="background:var(--purple);color:white;" onclick="updateStatus('${o.id}','gonderildi')">🚚 Gönderildi</button><button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button></div>`;
+    actions=`<div class="order-actions">
+      <button class="order-act-btn" style="background:var(--purple);color:white;" onclick="updateStatus('${o.id}','gonderildi')">🚚 Gönderildi</button>
+      ${silmeIstegi&&(isFabrika||isYonetici)?`<button class="order-act-btn" style="background:var(--green);color:white;" onclick="approveDelete('${o.id}')">✅ Silmeyi Onayla</button><button class="order-act-btn" style="background:var(--card2);color:var(--text3);border:1.5px solid var(--border);" onclick="rejectDelete('${o.id}')">❌ Reddet</button>`:''}
+      <button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button>
+    </div>`;
   } else if(canEdit){
-    actions=`<div class="order-actions"><button class="order-act-btn btn-warning" onclick="openEditOrder('${o.id}')">✏️ Düzenle</button><button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button></div>`;
+    actions=`<div class="order-actions">
+      <button class="order-act-btn btn-warning" onclick="openEditOrder('${o.id}')">✏️ Düzenle</button>
+      <button class="order-act-btn" style="background:var(--red-bg);color:var(--red);border:1.5px solid var(--red);" onclick="deleteOrder('${o.id}')">🗑 Sil</button>
+      <button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button>
+    </div>`;
+  } else if(canRequestDelete){
+    actions=`<div class="order-actions">
+      <button class="order-act-btn" style="background:var(--red-bg);color:var(--red);border:1.5px solid var(--red);" onclick="requestDelete('${o.id}')">🗑 Silme İste</button>
+      <button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button>
+    </div>`;
   } else {
     actions=`<div class="order-actions"><button class="order-act-btn btn-detail" style="flex:none;" onclick="openDetail('${o.id}')">Detay Gör</button></div>`;
   }
@@ -702,6 +729,7 @@ function buildOrderCard(o){
     </div>
     <div class="order-items-preview">${itemChips}</div>
     ${termin}
+    ${deleteWarn}
     ${o.note?`<div style="padding:.3rem 1rem .6rem 1.7rem;font-size:.75rem;color:var(--text3);font-weight:600;">📝 ${o.note}</div>`:''}
     ${actions}
   </div>`;
@@ -858,18 +886,25 @@ function renderNotifs(){
     el.innerHTML='<div class="empty-state"><div class="empty-icon">🔔</div><div class="empty-txt">Bildirim Yok</div></div>';
     return;
   }
-  // Mark as read
-  data.forEach(n=>{if(!n.read&&(isFabrika||isYonetici||n.toUser===curUser.id))n.read=true;});
+  // Don't mark deleteRequest notifs as read — keep them visible until resolved
+  data.forEach(n=>{if(!n.read&&n.type!=='deleteRequest'&&(isFabrika||isYonetici||n.toUser===curUser.id))n.read=true;});
   saveLocal();updateBadges();
-  const statusColors={alinmadi:'var(--red)',alindi:'var(--yellow)',islemde:'var(--orange)',hazir:'var(--green)'};
-  el.innerHTML=data.map(n=>`<div style="margin:0 .8rem .6rem;background:var(--card);border-radius:var(--radius);border:1.5px solid var(--sep);padding:.85rem 1rem;box-shadow:var(--shadow);">
-    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.3rem;">
-      <div style="width:9px;height:9px;border-radius:50%;background:${statusColors[n.status]||'var(--blue)'};flex-shrink:0;"></div>
-      <span style="font-size:.88rem;font-weight:900;color:var(--text);">${n.label}</span>
-    </div>
-    <div style="font-size:.75rem;color:var(--text3);font-weight:600;">Sipariş #${n.orderId} · ${n.fromName} · ${n.at}</div>
-    <button onclick="openDetail('${n.orderId}')" style="margin-top:.5rem;background:var(--blue-bg);color:var(--blue);border:none;border-radius:8px;padding:4px 12px;font-family:var(--font);font-size:.75rem;font-weight:800;cursor:pointer;">Siparişi Gör</button>
-  </div>`).join('');
+  const statusColors={alinmadi:'var(--red)',alindi:'var(--yellow)',islemde:'var(--orange)',hazir:'var(--green)',gonderildi:'var(--purple)',iptal:'var(--red)',duzenlendi:'var(--blue)',deleteRequest:'var(--red)',deleteApproved:'var(--green)',deleteRejected:'var(--text3)'};
+  el.innerHTML=data.map(n=>{
+    const isDeleteReq=n.type==='deleteRequest'&&(curUser.role==='fabrika'||curUser.role==='yonetici');
+    const order=orders.find(o=>o.id===n.orderId);
+    const stillPending=isDeleteReq&&order&&order.deleteRequest&&order.deleteRequest.pending;
+    const approveBtn=stillPending?('<button onclick="approveDelete(\''+n.orderId+'\')" style="background:var(--green);color:white;border:none;border-radius:8px;padding:5px 12px;font-family:var(--font);font-size:.78rem;font-weight:800;cursor:pointer;">✅ Onayla ve Sil</button><button onclick="rejectDelete(\''+n.orderId+'\')" style="background:var(--red-bg);color:var(--red);border:2px solid var(--red);border-radius:8px;padding:5px 12px;font-family:var(--font);font-size:.78rem;font-weight:800;cursor:pointer;">❌ Reddet</button>'):'';
+    const detailBtn=order?('<button onclick="openDetail(\''+n.orderId+'\')" style="background:var(--blue-bg);color:var(--blue);border:none;border-radius:8px;padding:5px 12px;font-family:var(--font);font-size:.75rem;font-weight:800;cursor:pointer;">Siparişi Gör</button>'):'';
+    return`<div style="margin:0 .8rem .6rem;background:var(--card);border-radius:var(--radius);border:1.5px solid ${stillPending?'var(--red)':'var(--sep)'};padding:.85rem 1rem;box-shadow:var(--shadow);">
+      <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.3rem;">
+        <div style="width:9px;height:9px;border-radius:50%;background:${statusColors[n.status]||'var(--blue)'};flex-shrink:0;"></div>
+        <span style="font-size:.88rem;font-weight:900;color:${stillPending?'var(--red)':'var(--text)'};">${n.label}</span>
+      </div>
+      <div style="font-size:.75rem;color:var(--text3);font-weight:600;">Sipariş #${n.orderId} · ${n.fromName} · ${n.at}</div>
+      <div style="display:flex;gap:.4rem;margin-top:.5rem;flex-wrap:wrap;">${approveBtn}${detailBtn}</div>
+    </div>`;
+  }).join('');
 }
 
 // ════════════════════════════════════════════
@@ -1243,6 +1278,77 @@ function addProductItemToEdit(){
   curItems=saved;
   // Restore original onclick
   document.querySelector('#productOverlay .submit-btn').setAttribute('onclick','addProductItem()');
+}
+function requestDelete(id){
+  if(!confirm('Silme onayı fabrika sorumlularına gönderilecek. Devam?'))return;
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  o.deleteRequest={pending:true,by:curUser.name,byId:curUser.id,at:nowStr()};
+  o.updatedAt=nowStr();
+  saveLocal();
+  syncAction('updateOrder',{order:o,prevStatus:o.status});
+  // Fabrikaya bildirim
+  users.filter(u=>u.role==='fabrika'||u.role==='yonetici').forEach(u=>{
+    notifs.unshift({
+      id:'n'+Date.now()+Math.random(),
+      orderId:o.id,
+      type:'deleteRequest',
+      toUser:u.id,
+      fromUser:curUser.id,
+      fromName:curUser.name,
+      status:'deleteRequest',
+      label:'Silme Onayı İsteniyor',
+      at:nowStr(),ts:Date.now(),read:false,
+    });
+  });
+  notifs=notifs.slice(0,200);
+  saveLocal();updateBadges();
+  renderAll();
+  showToast('📨 Silme isteği fabrikaya gönderildi');
+}
+function approveDelete(id){
+  if(!confirm('Siparişi silmek istediğinizden emin misiniz?'))return;
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  // Notify owner
+  notifs.unshift({
+    id:'n'+Date.now(),orderId:id,toUser:o.createdBy,
+    fromUser:curUser.id,fromName:curUser.name,
+    status:'deleteApproved',label:'Silme Onaylandı',
+    at:nowStr(),ts:Date.now(),read:false,
+  });
+  orders=orders.filter(x=>x.id!==id);
+  notifs=notifs.filter(n=>n.orderId!==id||n.type!=='deleteRequest');
+  notifs=notifs.slice(0,200);
+  saveLocal();
+  syncAction('deleteOrder',{orderId:id});
+  renderAll();
+  showToast('✅ Sipariş silindi');
+}
+function rejectDelete(id){
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  o.deleteRequest=null;
+  o.updatedAt=nowStr();
+  saveLocal();
+  syncAction('updateOrder',{order:o,prevStatus:o.status});
+  // Notify owner
+  notifs.unshift({
+    id:'n'+Date.now(),orderId:id,toUser:o.createdBy,
+    fromUser:curUser.id,fromName:curUser.name,
+    status:'deleteRejected',label:'Silme Reddedildi',
+    at:nowStr(),ts:Date.now(),read:false,
+  });
+  notifs=notifs.filter(n=>!(n.orderId===id&&n.type==='deleteRequest'));
+  notifs=notifs.slice(0,200);
+  saveLocal();updateBadges();
+  renderAll();
+  showToast('❌ Silme isteği reddedildi');
+}
+function deleteOrder(id){
+  if(!confirm('Bu siparişi kalıcı olarak silmek istiyor musun?'))return;
+  orders=orders.filter(o=>o.id!==id);
+  saveLocal();
+  syncAction('deleteOrder',{orderId:id});
+  renderAll();
+  showToast('🗑 Sipariş silindi');
 }
 function saveEditOrder(){
   const id=document.getElementById('editOrderId').value;
