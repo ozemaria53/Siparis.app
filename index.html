@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Biass Sipariş">
+<meta name="apple-mobile-web-app-title" content="Sipariş">
 <meta name="theme-color" content="#0f172a">
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icon-192.png">
-<title>Biass Sipariş</title>
+<title>Sipariş</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#0f172a;--card:#1e293b;--card2:#263348;--sep:rgba(255,255,255,.08);
-  --text:#f1f5f9;--text2:#cbd5e1;--text3:#64748b;
+  --text:#ffffff;--text2:#e2e8f0;--text3:#94a3b8;
   --blue:#3b82f6;--blue-bg:rgba(59,130,246,.15);
   --green:#22c55e;--green-bg:rgba(34,197,94,.15);
   --red:#ef4444;--red-bg:rgba(239,68,68,.15);
@@ -74,7 +74,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 /* CARDS */
 .page{padding-bottom:100px;flex:1;}
 .section-hdr{padding:.9rem 1rem .4rem;display:flex;justify-content:space-between;align-items:center;}
-.section-title{font-size:.85rem;font-weight:900;color:var(--text2);}
+.section-title{font-size:.85rem;font-weight:900;color:var(--text);}
 
 /* ORDER CARD */
 .order-card{margin:0 .8rem .7rem;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1.5px solid var(--sep);overflow:hidden;transition:all .2s;}
@@ -119,7 +119,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 
 /* FORM */
 .f-section{padding:.6rem 1rem 0;}
-.f-lbl{font-size:.75rem;font-weight:900;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem;display:block;}
+.f-lbl{font-size:.75rem;font-weight:900;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem;display:block;}
 .f-card{background:var(--card2);border-radius:var(--radius);border:2px solid var(--border);overflow:hidden;margin-bottom:.75rem;}
 .f-row{display:flex;align-items:center;padding:.85rem 1rem;border-bottom:1.5px solid var(--sep);gap:.7rem;}
 .f-row:last-child{border-bottom:none;}
@@ -134,11 +134,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .submit-btn.red{background:var(--red);color:white;}
 
 /* PRODUCT BUILDER */
-.cat-btn{flex:1;padding:.7rem .3rem;border:2px solid var(--border);border-radius:12px;font-family:var(--font);font-size:.75rem;font-weight:800;cursor:pointer;background:var(--card2);color:var(--text3);transition:all .15s;text-align:center;}
+.cat-btn{flex:1;padding:.7rem .3rem;border:2px solid var(--border);border-radius:12px;font-family:var(--font);font-size:.75rem;font-weight:800;cursor:pointer;background:var(--card2);color:var(--text2);transition:all .15s;text-align:center;}
 .cat-btn.active{border-color:var(--blue);background:var(--blue-bg);color:var(--blue);}
 .cat-btn:active{transform:scale(.95);}
 .option-grid{display:flex;flex-wrap:wrap;gap:.5rem;padding:.75rem 1rem;}
-.option-chip{padding:.5rem .9rem;border:2px solid var(--border);border-radius:10px;font-family:var(--font);font-size:.8rem;font-weight:800;cursor:pointer;background:var(--card2);color:var(--text3);transition:all .15s;}
+.option-chip{padding:.5rem .9rem;border:2px solid var(--border);border-radius:10px;font-family:var(--font);font-size:.8rem;font-weight:800;cursor:pointer;background:var(--card2);color:var(--text2);transition:all .15s;}
 .option-chip.active{border-color:var(--blue);background:var(--blue-bg);color:var(--blue);}
 .option-chip:active{transform:scale(.93);}
 .product-item-card{margin:.5rem 1rem;background:var(--blue-bg);border-radius:12px;padding:.8rem 1rem;border:1.5px solid var(--blue);display:flex;align-items:flex-start;gap:.7rem;}
@@ -199,9 +199,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 <!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
-    <div class="login-logo" id="loginLogo">📦</div>
-    <div class="login-title">Biass Sipariş</div>
-    <div class="login-sub">Aksesuar Plastik Tekstil San. Tic. Ltd. Şti.</div>
+    
+    <div class="login-title">Sipariş</div>
+    
     <label class="login-label">Kullanıcı Seçin</label>
     <select class="login-select" id="loginUser" onchange="onUserChange()"><option value="">-- Seçin --</option></select>
     <input type="password" class="login-input" id="loginPass" placeholder="Şifre" onkeydown="if(event.key==='Enter')doLogin()">
@@ -214,9 +214,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 <div class="app" id="mainApp" style="display:none;">
   <div class="topbar">
     <div class="top-left">
-      <div class="top-logo" id="topLogo">📦</div>
       <div>
-        <div class="top-title">Biass Sipariş</div>
+        <div class="top-title">Sipariş</div>
         <div class="top-sub">Fabrika Sipariş Sistemi</div>
       </div>
     </div>
@@ -1153,7 +1152,15 @@ function deleteUser(id){
 function nowStr(){
   return new Date().toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
 }
-function showSheet(id){document.getElementById(id).classList.add('show');}
+function showSheet(id){
+  const el=document.getElementById(id);
+  el.classList.add('show');
+  // Scroll sheet content to top
+  setTimeout(()=>{
+    const sheet=el.querySelector('.sheet');
+    if(sheet)sheet.scrollTop=0;
+  },50);
+}
 function closeSheet(id){document.getElementById(id).classList.remove('show');}
 function oClose(e,id){if(e.target===document.getElementById(id))closeSheet(id);}
 function showToast(msg){
