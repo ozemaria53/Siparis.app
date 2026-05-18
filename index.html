@@ -305,6 +305,36 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   </div>
 </div>
 
+<!-- EDIT ORDER OVERLAY -->
+<div class="overlay" id="editOrderOverlay" onclick="oClose(event,'editOrderOverlay')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-hdr">
+      <div class="sheet-title">✏️ Siparişi Düzenle</div>
+      <button class="sheet-close" onclick="closeSheet('editOrderOverlay')">✕</button>
+    </div>
+    <div style="padding:.8rem 1rem 0;">
+      <div style="font-size:.82rem;color:var(--orange);font-weight:700;margin-bottom:.6rem;background:var(--orange-bg);border-radius:10px;padding:.6rem .8rem;">⚠️ Sipariş henüz fabrika tarafından alınmadı. Değişiklikler fabrikaya bildirilecek.</div>
+      <div style="font-size:.82rem;color:var(--text3);font-weight:600;margin-bottom:.7rem;">Mevcut ürünleri silebilir veya yeni ürün ekleyebilirsiniz.</div>
+      <div id="editOrderItems"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.8rem;" id="editCatBtns">
+        <button class="cat-btn" onclick="openProductFormForEdit('seffaf_lastik')">Şeffaf Lastik</button>
+        <button class="cat-btn" onclick="openProductFormForEdit('fitil')">Fitiller</button>
+        <button class="cat-btn" onclick="openProductFormForEdit('balen')">Balenler</button>
+        <button class="cat-btn" onclick="openProductFormForEdit('kesme_balen')">Kesme Balen</button>
+        <button class="cat-btn" onclick="openProductFormForEdit('makara_seffaf')">Makara Şeffaf</button>
+        <button class="cat-btn" onclick="openProductFormForEdit('serigrafi')">Serigrafi Baskı</button>
+      </div>
+      <div class="f-section" style="padding:0 0 .5rem;">
+        <label class="f-lbl">Sipariş Notu</label>
+        <div class="f-card"><div class="f-row"><span class="f-ico">📝</span><textarea id="editOrderNote" style="height:56px;resize:none;" placeholder="Genel sipariş notu..."></textarea></div></div>
+      </div>
+      <input type="hidden" id="editOrderId">
+      <button class="submit-btn blue" onclick="saveEditOrder()">💾 Değişiklikleri Kaydet</button>
+    </div>
+  </div>
+</div>
+
 <!-- SETTINGS OVERLAY -->
 <div class="overlay" id="settingsOverlay" onclick="oClose(event,'settingsOverlay')">
   <div class="sheet">
@@ -631,24 +661,31 @@ function renderOrders(){
 }
 function buildOrderCard(o){
   const u=users.find(x=>x.id===o.createdBy)||{name:o.createdByName||'?',color:'#888'};
-  const statusLabel={alinmadi:'⏳ Bekliyor',alindi:'✅ Alındı',islemde:'⚙️ İşlemde',hazir:'📦 Hazır',gonderildi:'🚚 Gönderildi'}[o.status]||o.status;
+  const statusLabel={alinmadi:'⏳ Bekliyor',alindi:'✅ Alındı',islemde:'⚙️ İşlemde',hazir:'📦 Hazır',gonderildi:'🚚 Gönderildi',iptal:'❌ İptal'}[o.status]||o.status;
   const isFabrika=curUser&&curUser.role==='fabrika';
-  const isMerkez=curUser&&curUser.role==='merkez';
   const isYonetici=curUser&&curUser.role==='yonetici';
+  const isOwner=curUser&&curUser.id===o.createdBy;
+  // Düzenleme: sipariş sahibi veya yönetici, henüz alınmadıysa
+  const canEdit=(isOwner||isYonetici)&&o.status==='alinmadi';
 
   const itemChips=(o.items||[]).map(i=>`<span class="order-item-chip">${catLabel(i.category)}</span>`).join('');
   const termin=o.termin?`<div class="order-termin">📅 Termin: ${o.termin}${o.terminNote?' — '+o.terminNote:''}</div>`:'';
 
-  // Actions based on role and status
   let actions='';
   if((isFabrika||isYonetici)&&o.status==='alinmadi'){
-    actions=`<div class="order-actions"><button class="order-act-btn btn-success" onclick="openTermin('${o.id}')">✅ Sipariş Al</button><button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button></div>`;
+    actions=`<div class="order-actions">
+      <button class="order-act-btn btn-success" onclick="openTermin('${o.id}')">✅ Sipariş Al</button>
+      ${canEdit?`<button class="order-act-btn btn-warning" onclick="openEditOrder('${o.id}')">✏️ Düzenle</button>`:''}
+      <button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button>
+    </div>`;
   } else if((isFabrika||isYonetici)&&o.status==='alindi'){
     actions=`<div class="order-actions"><button class="order-act-btn btn-warning" onclick="updateStatus('${o.id}','islemde')">⚙️ İşleme Al</button><button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button></div>`;
   } else if((isFabrika||isYonetici)&&o.status==='islemde'){
     actions=`<div class="order-actions"><button class="order-act-btn btn-primary" onclick="updateStatus('${o.id}','hazir')">📦 Hazır</button><button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button></div>`;
   } else if((isFabrika||isYonetici)&&o.status==='hazir'){
     actions=`<div class="order-actions"><button class="order-act-btn" style="background:var(--purple);color:white;" onclick="updateStatus('${o.id}','gonderildi')">🚚 Gönderildi</button><button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button></div>`;
+  } else if(canEdit){
+    actions=`<div class="order-actions"><button class="order-act-btn btn-warning" onclick="openEditOrder('${o.id}')">✏️ Düzenle</button><button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button></div>`;
   } else {
     actions=`<div class="order-actions"><button class="order-act-btn btn-detail" style="flex:none;" onclick="openDetail('${o.id}')">Detay Gör</button></div>`;
   }
@@ -704,8 +741,9 @@ function openDetail(id){
   // Timeline
   html+=`<div class="detail-section"><div class="detail-hdr">Durum Geçmişi</div>`;
   (o.timeline||[]).forEach(t=>{
-    const colors={alinmadi:'var(--red)',alindi:'var(--yellow)',islemde:'var(--orange)',hazir:'var(--green)'};
-    html+=`<div class="timeline-item"><div class="timeline-dot" style="background:${colors[t.status]||'var(--blue)'};"></div><div class="timeline-body"><div class="timeline-title">${{alinmadi:'Sipariş oluşturuldu',alindi:'Sipariş alındı',islemde:'İşleme alındı',hazir:'Hazır'}[t.status]||t.status}</div><div class="timeline-date">${t.at} — ${t.byName||''}</div></div></div>`;
+    const colors={alinmadi:'var(--red)',alindi:'var(--yellow)',islemde:'var(--orange)',hazir:'var(--green)',gonderildi:'var(--purple)',iptal:'var(--red)',duzenlendi:'var(--blue)'};
+    const tlabels={alinmadi:'Sipariş oluşturuldu',alindi:'Sipariş alındı',islemde:'İşleme alındı',hazir:'Hazır',gonderildi:'Gönderildi',iptal:'İptal edildi',duzenlendi:'Sipariş düzenlendi'};
+    html+=`<div class="timeline-item"><div class="timeline-dot" style="background:${colors[t.status]||'var(--blue)'};"></div><div class="timeline-body"><div class="timeline-title">${tlabels[t.status]||t.status}</div><div class="timeline-date">${t.at} — ${t.byName||''}</div></div></div>`;
   });
   html+='</div>';
 
@@ -1151,8 +1189,78 @@ function submitOrder(){
 }
 
 // ════════════════════════════════════════════
-// SETTINGS
+// EDIT ORDER
 // ════════════════════════════════════════════
+let editOrderItems=[];
+
+function openEditOrder(id){
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  editOrderItems=[...o.items.map(i=>({...i}))];
+  document.getElementById('editOrderId').value=id;
+  document.getElementById('editOrderNote').value=o.note||'';
+  renderEditOrderItems();
+  showSheet('editOrderOverlay');
+}
+function renderEditOrderItems(){
+  const el=document.getElementById('editOrderItems');if(!el)return;
+  if(!editOrderItems.length){
+    el.innerHTML='<div style="text-align:center;padding:.8rem;font-size:.82rem;color:var(--text3);font-weight:600;margin-bottom:.5rem;">Ürün yok — aşağıdan ekleyin</div>';
+    return;
+  }
+  el.innerHTML=editOrderItems.map((item,i)=>`
+    <div style="background:var(--blue-bg);border:1.5px solid var(--blue);border-radius:12px;padding:.75rem 1rem;margin-bottom:.5rem;display:flex;align-items:flex-start;gap:.7rem;">
+      <div style="flex:1;">
+        <div style="font-size:.68rem;font-weight:900;color:var(--blue);text-transform:uppercase;margin-bottom:3px;">${catLabel(item.category)}</div>
+        <div style="font-size:.82rem;font-weight:700;color:var(--text);">${formatItemShort(item)}</div>
+      </div>
+      <button onclick="removeEditItem(${i})" style="background:var(--red-bg);color:var(--red);border:none;border-radius:8px;padding:4px 10px;font-family:var(--font);font-size:.72rem;font-weight:800;cursor:pointer;">Sil</button>
+    </div>`).join('');
+}
+function removeEditItem(i){
+  editOrderItems.splice(i,1);
+  renderEditOrderItems();
+}
+function openProductFormForEdit(cat){
+  // Use the same product form but add to editOrderItems
+  curProductCat=cat;kbRows=[];editingKbOlcu=null;
+  resetPhotos();
+  const titles={seffaf_lastik:'Şeffaf Lastik',fitil:'Fitiller',balen:'Balenler',kesme_balen:'Kesme Balen',makara_seffaf:'Makara Şeffaf Lastik',serigrafi:'Serigrafi Baskılı Yazı'};
+  document.getElementById('productFormTitle').textContent=titles[cat]||cat;
+  document.getElementById('productFormBody').innerHTML=buildProductForm(cat);
+  // Change submit button to add to edit list
+  document.querySelector('#productOverlay .submit-btn').setAttribute('onclick','addProductItemToEdit()');
+  showSheet('productOverlay');
+}
+function addProductItemToEdit(){
+  // Temporarily swap curItems
+  const saved=curItems;
+  curItems=[];
+  addProductItem();
+  if(curItems.length){
+    editOrderItems.push(...curItems);
+    renderEditOrderItems();
+  }
+  curItems=saved;
+  // Restore original onclick
+  document.querySelector('#productOverlay .submit-btn').setAttribute('onclick','addProductItem()');
+}
+function saveEditOrder(){
+  const id=document.getElementById('editOrderId').value;
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  if(!editOrderItems.length){showToast('⚠ En az bir ürün olmalı');return;}
+  o.items=[...editOrderItems];
+  o.note=document.getElementById('editOrderNote').value.trim();
+  o.updatedAt=nowStr();
+  o.timeline=o.timeline||[];
+  o.timeline.push({status:'duzenlendi',at:nowStr(),by:curUser.id,byName:curUser.name});
+  saveLocal();
+  syncAction('updateOrder',{order:o,prevStatus:o.status});
+  // Fabrikaya bildirim
+  addNotifToFabrika(o,'duzenlendi');
+  closeSheet('editOrderOverlay');
+  renderAll();
+  showToast('✅ Sipariş güncellendi');
+}
 function openSettings(){
   renderSettingsUserList();
   // Fill cancel order select
@@ -1194,7 +1302,7 @@ function cancelSelectedOrder(){
   showToast('❌ Sipariş iptal edildi');
 }
 function addNotifToFabrika(order,status){
-  const label={iptal:'Sipariş İptal Edildi',gonderildi:'Sipariş Gönderildi'}[status]||status;
+  const label={iptal:'Sipariş İptal Edildi',gonderildi:'Sipariş Gönderildi',duzenlendi:'Sipariş Düzenlendi'}[status]||status;
   // Notify fabrika users
   users.filter(u=>u.role==='fabrika'||u.role==='yonetici').forEach(u=>{
     notifs.unshift({
