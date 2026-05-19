@@ -1,11 +1,11 @@
 {
-  "name": "Biass Kasa",
-  "short_name": "Biass Kasa",
-  "description": "Biass Aksesuar Plastik Tekstil - Kasa Yönetimi",
+  "name": "Biass Fabrika Sipariş",
+  "short_name": "Biass Sipariş",
+  "description": "Biass Fabrika Sipariş Yönetim Sistemi",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#1a2e6e",
-  "theme_color": "#1a2e6e",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
   "orientation": "portrait",
   "icons": [
     {
