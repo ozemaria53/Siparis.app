@@ -144,10 +144,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .kb-qty{width:75px;text-align:center;background:var(--card);border:2px solid var(--border);border-radius:8px;padding:.45rem;font-family:var(--font);font-size:.9rem;font-weight:700;color:var(--text);outline:none;}
 
 /* OVERLAY / SHEET */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;overflow:hidden;}
 .overlay.show{opacity:1;pointer-events:all;}
-.sheet{background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;transform:translateY(0);padding-bottom:calc(1.5rem + env(safe-area-inset-bottom));padding-top:2px;}
-.overlay.show .sheet{transform:translateY(0);}
+.sheet{background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;overflow-x:hidden;padding-bottom:calc(1.5rem + env(safe-area-inset-bottom));padding-top:2px;}
 .sheet-handle{width:44px;height:5px;background:var(--border);border-radius:3px;margin:.9rem auto 0;}
 .sheet-hdr{padding:1rem 1.2rem .6rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--card);z-index:10;border-bottom:1.5px solid var(--sep);}
 .sheet-title{font-size:1.25rem;font-weight:700;color:var(--text);}
@@ -1390,15 +1389,10 @@ function nowStr(){return new Date().toLocaleString('tr-TR',{day:'2-digit',month:
 function todayKey(){return new Date().toISOString().slice(0,10);}
 function showSheet(id){
   const el=document.getElementById(id);
+  const s=el.querySelector('.sheet');
+  if(s)s.scrollTop=0;
   el.classList.add('show');
-  setTimeout(()=>{
-    const s=el.querySelector('.sheet');
-    if(s){s.scrollTop=0;s.scrollTo(0,0);}
-  },10);
-  setTimeout(()=>{
-    const s=el.querySelector('.sheet');
-    if(s){s.scrollTop=0;s.scrollTo(0,0);}
-  },350);
+  if(s)s.scrollTop=0;
 }
 function closeSheet(id){document.getElementById(id).classList.remove('show');}
 function oClose(e,id){if(e.target===document.getElementById(id))closeSheet(id);}
