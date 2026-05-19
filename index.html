@@ -146,7 +146,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 /* OVERLAY / SHEET */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
 .overlay.show{opacity:1;pointer-events:all;}
-.sheet{background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);padding-bottom:calc(1.5rem + env(safe-area-inset-bottom));padding-top:2px;}
+.sheet{background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;transform:translateY(0);padding-bottom:calc(1.5rem + env(safe-area-inset-bottom));padding-top:2px;}
 .overlay.show .sheet{transform:translateY(0);}
 .sheet-handle{width:44px;height:5px;background:var(--border);border-radius:3px;margin:.9rem auto 0;}
 .sheet-hdr{padding:1rem 1.2rem .6rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--card);z-index:10;border-bottom:1.5px solid var(--sep);}
@@ -491,7 +491,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 // ════════════════════════════
 // CONFIG
 // ════════════════════════════
-const GS_URL='https://script.google.com/macros/s/AKfycbzmn-KPVELHKKfVbH-IeEthN34hmBvHumENeEjMuFVxfi8vQe12F-NnZjxeueaaPjuK/exec';
+const GS_URL='https://script.google.com/macros/s/AKfycbxaxCJ0yaYcTY2YnKXq4IUgacEgvmhot1zNl5Ow3HOYrilj8mw3xXjLYUIkIksC7c-N/exec';
 
 // ── ÜRÜN LİSTELERİ ──
 const SEFFAF_LASTIK=[
@@ -1393,8 +1393,12 @@ function showSheet(id){
   el.classList.add('show');
   setTimeout(()=>{
     const s=el.querySelector('.sheet');
-    if(s){s.scrollTop=0;s.scrollTo({top:0,behavior:'instant'});}
-  },80);
+    if(s){s.scrollTop=0;s.scrollTo(0,0);}
+  },10);
+  setTimeout(()=>{
+    const s=el.querySelector('.sheet');
+    if(s){s.scrollTop=0;s.scrollTo(0,0);}
+  },350);
 }
 function closeSheet(id){document.getElementById(id).classList.remove('show');}
 function oClose(e,id){if(e.target===document.getElementById(id))closeSheet(id);}
