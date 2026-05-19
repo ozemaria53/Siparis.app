@@ -10,7 +10,7 @@
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icon-192.png">
 <title>Sipariş</title>
-<!-- Helvetica system font -->
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -37,69 +37,7 @@
   }
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);font-size:18px;}
-.app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;}
-
-/* LOGIN */
-#loginScreen{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;}
-.login-box{width:100%;max-width:360px;}
-.login-logo{width:100px;height:100px;border-radius:22px;background:var(--nav);margin:0 auto 1.2rem;display:flex;align-items:center;justify-content:center;font-size:2.6rem;box-shadow:0 8px 32px rgba(0,0,0,.4);overflow:hidden;}
-.login-logo img{width:100%;height:100%;object-fit:contain;padding:8px;}
-.login-title{font-size:2rem;font-weight:900;color:var(--text);text-align:center;}
-.login-sub{font-size:.8rem;color:var(--text3);text-align:center;margin-top:4px;margin-bottom:1.8rem;}
-.login-label{font-size:.88rem;font-weight:800;color:var(--text2);margin-bottom:.4rem;display:block;}
-.login-select{width:100%;background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:.9rem 1.1rem;font-family:var(--font);font-size:1rem;font-weight:700;color:var(--text);outline:none;margin-bottom:.8rem;}
-.login-input{width:100%;background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:.9rem 1.1rem;font-family:var(--font);font-size:1rem;font-weight:700;color:var(--text);outline:none;margin-bottom:.8rem;}
-.login-btn{width:100%;background:var(--blue);color:white;border:none;border-radius:var(--radius);padding:1rem;font-family:var(--font);font-size:1.1rem;font-weight:900;cursor:pointer;margin-top:.3rem;}
-.login-err{color:var(--red);font-size:.88rem;font-weight:700;text-align:center;min-height:1.3rem;margin-top:.3rem;}
-
-/* TOPBAR */
-.topbar{background:var(--nav);padding:.8rem 1.1rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.3);}
-.top-left{display:flex;align-items:center;gap:.6rem;}
-.top-logo{width:44px;height:44px;border-radius:10px;background:white;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.top-logo img{width:100%;height:100%;object-fit:contain;padding:4px;}
-.top-title{font-size:1.15rem;font-weight:900;color:white;line-height:1.2;}
-.top-sub{font-size:.65rem;color:rgba(255,255,255,.55);font-weight:600;}
-.top-right{display:flex;align-items:center;gap:.4rem;}
-.user-pill{display:flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.15);border-radius:20px;padding:.3rem .8rem;border:1.5px solid rgba(255,255,255,.2);}
-.user-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.user-pill-name{font-size:.8rem;font-weight:800;color:white;}
-.top-btn{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.12);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
-
-/* TABS */
-.tabs{display:flex;background:var(--card);border-bottom:2px solid var(--sep);position:sticky;top:64px;z-index:90;}
-.tab{flex:1;font-family:var(--font);font-size:1rem;font-weight:700;color:#7dd3fc;padding:.85rem .2rem;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;position:relative;}
-.tab.active{color:#ffffff;border-bottom-color:#38bdf8;}
-.tab-badge{position:absolute;top:6px;right:6px;background:var(--red);color:white;border-radius:10px;font-size:.55rem;font-weight:900;padding:1px 5px;min-width:16px;text-align:center;}
-
-/* CARDS */
-.page{padding-bottom:100px;flex:1;}
-.section-hdr{padding:.9rem 1rem .4rem;display:flex;justify-content:space-between;align-items:center;}
-.section-title{font-size:.85rem;font-weight:900;color:var(--text);}
-
-/* ORDER CARD */
-.order-card{margin:0 .8rem .7rem;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1.5px solid var(--sep);overflow:hidden;transition:all .2s;}
-.order-card-hdr{padding:.85rem 1rem;display:flex;align-items:flex-start;gap:.7rem;}
-.order-status-stripe{width:4px;align-self:stretch;border-radius:4px;flex-shrink:0;}
-.order-info{flex:1;min-width:0;}
-.order-id{font-size:.8rem;font-weight:700;color:var(--text3);margin-bottom:3px;}
-.order-creator{font-size:1rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:.4rem;}
-.order-creator-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.order-date{font-size:.8rem;color:var(--text3);font-weight:600;margin-top:3px;}
-.order-status-badge{padding:3px 10px;border-radius:20px;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;flex-shrink:0;}
-.order-items-preview{padding:.5rem 1rem .8rem 1.7rem;display:flex;flex-wrap:wrap;gap:.4rem;}
-.order-item-chip{background:var(--card2);border-radius:8px;padding:5px 10px;font-size:.82rem;font-weight:700;color:var(--text2);border:1px solid var(--sep);}
-.order-termin{padding:.4rem 1rem .7rem 1.7rem;font-size:.72rem;font-weight:700;color:var(--orange);}
-.order-actions{display:flex;gap:.5rem;padding:.5rem 1rem .8rem;border-top:1px solid var(--sep);}
-.order-act-btn{flex:1;padding:.6rem;border:none;border-radius:10px;font-family:var(--font);font-size:.78rem;font-weight:800;cursor:pointer;transition:all .15s;}
-.order-act-btn:active{transform:scale(.95);}
-.btn-primary{background:var(--blue);color:white;}
-.btn-success{background:var(--green);color:white;}
-.btn-warning{background:var(--orange);color:white;}
-.btn-detail{background:var(--card2);color:var(--text2);border:1.5px solid var(--border);}
-
-/* EMPTY */
-.empty-state{text-align:center;padding:3rem 1rem;}
-.empty-icon{font-size:3.5rem;margin-bottom:.8rem;opacity:.35;}
+.app{max-width:480px;margin:0 auto;min-height:100vh;display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:.8rem;opacity:.35;}
 .empty-txt{font-size:1rem;font-weight:800;color:var(--text3);}
 .empty-sub{font-size:.82rem;color:var(--text3);margin-top:.3rem;font-weight:600;}
 
@@ -134,8 +72,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .submit-btn.red{background:var(--red);color:white;}
 
 /* PRODUCT BUILDER */
-.cat-btn{flex:1;padding:.8rem .4rem;border:2px solid var(--border);border-radius:12px;font-family:var(--font);font-size:.95rem;font-weight:700;cursor:pointer;background:var(--card2);color:var(--text2);transition:all .15s;text-align:center;}
-.cat-btn.active{border-color:var(--blue);background:var(--blue-bg);color:var(--blue);}
+.cat-btn{padding:.85rem .3rem;border:2px solid #3b82f6;border-radius:12px;font-family:Helvetica,"Helvetica Neue",Arial,sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;background:#1e3a5f;color:#e0f0ff;transition:all .15s;text-align:center;line-height:1.35;flex-basis:auto;}
+.cat-btn.active{background:#3b82f6;color:white;border-color:#60a5fa;}
 .cat-btn:active{transform:scale(.95);}
 .option-grid{display:flex;flex-wrap:wrap;gap:.5rem;padding:.75rem 1rem;}
 .option-chip{padding:.65rem 1rem;border:2px solid var(--border);border-radius:10px;font-family:var(--font);font-size:.95rem;font-weight:700;cursor:pointer;background:var(--card2);color:var(--text2);transition:all .15s;}
@@ -158,8 +96,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .status-alindi{background:var(--yellow-bg);color:var(--yellow);}
 .status-islemde{background:var(--orange-bg);color:var(--orange);}
 .status-hazir{background:var(--green-bg);color:var(--green);}
-.status-gonderildi{background:var(--purple-bg);color:var(--purple);}
-.stripe-gonderildi{background:var(--purple);}
+.status-gonderildi{background:rgba(8,145,178,.15);color:#0891b2;}
+.stripe-gonderildi{background:#0891b2;}
 .stripe-alinmadi{background:var(--red);}
 .stripe-alindi{background:var(--yellow);}
 .stripe-islemde{background:var(--orange);}
@@ -194,9 +132,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 
 
 .photo-area-sm{display:flex;gap:.5rem;flex-wrap:wrap;padding:.6rem 1rem;}
-.photo-thumb-sm{width:64px;height:64px;border-radius:9px;object-fit:cover;border:2px solid var(--border);position:relative;}
+.photo-thumb-sm{width:64px;height:64px;border-radius:9px;object-fit:cover;border:2px solid var(--border);cursor:zoom-in;}
 .photo-add-sm{width:64px;height:64px;border-radius:9px;background:var(--card2);border:2px dashed var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-size:1.3rem;color:var(--text3);gap:2px;}
 .photo-add-sm span{font-size:.6rem;font-weight:800;}
+.photo-zoom-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;}
+.photo-zoom-overlay img{max-width:95vw;max-height:90vh;border-radius:8px;object-fit:contain;}
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 </style>
@@ -236,7 +176,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     <button class="tab active" onclick="switchTab('orders')">Siparişler<span class="tab-badge" id="openBadge" style="display:none;"></span></button>
     <button class="tab" onclick="switchTab('new')">➕ Sipariş Ekle</button>
     <button class="tab" onclick="switchTab('notifs')">Bildirimler<span class="tab-badge" id="notifBadge" style="display:none;"></span></button>
-    <button class="tab" id="settingsTab" onclick="openSettings()" style="display:none;">⚙️</button>
+
   </div>
 
   <div class="page" id="page-orders">
@@ -254,15 +194,15 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 
   <div class="page" id="page-new" style="display:none;">
     <div style="padding:.8rem 1rem 0;">
-      <div style="font-size:.82rem;color:var(--text3);font-weight:600;margin-bottom:.5rem;">Siparişe ürün kategorisi ekleyin. Birden fazla ekleyebilirsiniz.</div>
+      <div style="font-size:.82rem;color:var(--text3);font-weight:600;margin-bottom:.5rem;">Siparişinize ürün ekleyin. Birden fazla kategoride birden fazla ürün ekleyebilirsiniz.</div>
       <!-- Category buttons -->
-      <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.8rem;" id="catBtns">
-        <button class="cat-btn" onclick="openProductForm('seffaf_lastik')">Şeffaf Lastik</button>
-        <button class="cat-btn" onclick="openProductForm('fitil')">Fitiller</button>
-        <button class="cat-btn" onclick="openProductForm('balen')">Balenler</button>
-        <button class="cat-btn" onclick="openProductForm('kesme_balen')">Kesme Balen</button>
-        <button class="cat-btn" onclick="openProductForm('makara_seffaf')">Makara Şeffaf</button>
-        <button class="cat-btn" onclick="openProductForm('serigrafi')">Serigrafi Baskı</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:.8rem;" id="catBtns">
+        <button class="cat-btn" onclick="openProductForm('seffaf_lastik')" style="">Şeffaf<br>Lastik</button>
+        <button class="cat-btn" onclick="openProductForm('fitil')" style="">Fitiller</button>
+        <button class="cat-btn" onclick="openProductForm('balen')" style="">Balenler</button>
+        <button class="cat-btn" onclick="openProductForm('kesme_balen')" style="">Kesme<br>Balen</button>
+        <button class="cat-btn" onclick="openProductForm('makara_seffaf')" style="flex-basis:45%;" style="">Makara<br>Şeffaf Lastik</button>
+        <button class="cat-btn" onclick="openProductForm('serigrafi')" style="flex-basis:45%;" style="">Serigrafi<br>Baskı</button>
       </div>
       <!-- Added items -->
       <div id="addedItems"></div>
@@ -270,6 +210,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
       <div class="f-section" style="padding:0 0 .5rem;">
         <label class="f-lbl" style="padding-left:0;">Sipariş Notu</label>
         <div class="f-card"><div class="f-row"><span class="f-ico">📝</span><textarea id="orderNote" placeholder="Genel sipariş notu (opsiyonel)..." style="height:56px;resize:none;"></textarea></div></div>
+      <div style="display:flex;gap:.4rem;margin-top:.3rem;">
+        <button onclick="addNoteTag('🚨 ACİL!')" style="background:#dc2626;color:white;border:none;border-radius:8px;padding:.45rem .8rem;font-family:Helvetica,'Helvetica Neue',Arial,sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;">🚨 ACİL!</button>
+        <button onclick="addNoteTag('⚠️ ÖNEMLİ NOT!')" style="background:#d97706;color:white;border:none;border-radius:8px;padding:.45rem .8rem;font-family:Helvetica,'Helvetica Neue',Arial,sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;">⚠️ ÖNEMLİ NOT!</button>
+      </div</div></div>
       </div>
       <button class="submit-btn blue" onclick="submitOrder()">📤 Siparişi Gönder</button>
     </div>
@@ -320,7 +264,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
       <div class="f-card"><div class="f-row"><span class="f-ico">📝</span><textarea id="gonderildiNote" placeholder="Kargo firması, takip no, vb..." style="height:56px;resize:none;"></textarea></div></div>
     </div>
     <input type="hidden" id="gonderildiOrderId">
-    <button class="submit-btn" style="background:var(--purple);color:white;" onclick="confirmGonderildi()">🚚 Gönderildi Olarak İşaretle</button>
+    <button class="submit-btn" style="background:#0891b2;color:white;" onclick="confirmGonderildi()">🚚 Gönderildi Olarak İşaretle</button>
   </div>
 </div>
 
@@ -336,13 +280,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
       <div style="font-size:.82rem;color:var(--orange);font-weight:700;margin-bottom:.6rem;background:var(--orange-bg);border-radius:10px;padding:.6rem .8rem;">⚠️ Sipariş henüz fabrika tarafından alınmadı. Değişiklikler fabrikaya bildirilecek.</div>
       <div style="font-size:.82rem;color:var(--text3);font-weight:600;margin-bottom:.7rem;">Mevcut ürünleri silebilir veya yeni ürün ekleyebilirsiniz.</div>
       <div id="editOrderItems"></div>
-      <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.8rem;" id="editCatBtns">
-        <button class="cat-btn" onclick="openProductFormForEdit('seffaf_lastik')">Şeffaf Lastik</button>
-        <button class="cat-btn" onclick="openProductFormForEdit('fitil')">Fitiller</button>
-        <button class="cat-btn" onclick="openProductFormForEdit('balen')">Balenler</button>
-        <button class="cat-btn" onclick="openProductFormForEdit('kesme_balen')">Kesme Balen</button>
-        <button class="cat-btn" onclick="openProductFormForEdit('makara_seffaf')">Makara Şeffaf</button>
-        <button class="cat-btn" onclick="openProductFormForEdit('serigrafi')">Serigrafi Baskı</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:.8rem;" id="editCatBtns">
+        <button class="cat-btn" onclick="openProductFormForEdit('seffaf_lastik')" style="">Şeffaf<br>Lastik</button>
+        <button class="cat-btn" onclick="openProductFormForEdit('fitil')" style="">Fitiller</button>
+        <button class="cat-btn" onclick="openProductFormForEdit('balen')" style="">Balenler</button>
+        <button class="cat-btn" onclick="openProductFormForEdit('kesme_balen')" style="">Kesme<br>Balen</button>
+        <button class="cat-btn" onclick="openProductFormForEdit('makara_seffaf')" style="flex-basis:45%;" style="">Makara<br>Şeffaf Lastik</button>
+        <button class="cat-btn" onclick="openProductFormForEdit('serigrafi')" style="flex-basis:45%;" style="">Serigrafi<br>Baskı</button>
       </div>
       <div class="f-section" style="padding:0 0 .5rem;">
         <label class="f-lbl">Sipariş Notu</label>
@@ -358,20 +302,53 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 <div class="overlay" id="settingsOverlay" onclick="oClose(event,'settingsOverlay')">
   <div class="sheet">
     <div class="sheet-handle"></div>
-    <div class="sheet-hdr"><div class="sheet-title">⚙️ Ayarlar</div><button class="sheet-close" onclick="closeSheet('settingsOverlay')">✕</button></div>
-    <div style="padding:.5rem .9rem 1rem;">
-      <div style="background:var(--card2);border-radius:var(--radius);border:1.5px solid var(--sep);overflow:hidden;margin-bottom:.8rem;">
-        <div style="padding:.75rem 1rem;font-size:.78rem;font-weight:900;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;border-bottom:1.5px solid var(--sep);">👥 Kullanıcı Yönetimi</div>
-        <div id="settingsUserList" style="padding:.4rem 0;"></div>
-        <div style="padding:.5rem 1rem .7rem;">
-          <button onclick="openAddUser()" style="width:100%;background:var(--blue-bg);color:var(--blue);border:2px solid var(--blue);border-radius:12px;padding:.7rem;font-family:var(--font);font-size:.88rem;font-weight:800;cursor:pointer;">+ Kullanıcı Ekle</button>
-        </div>
-        <div style="padding:0 1rem .7rem;">
-          <button onclick="openActivityLog()" style="width:100%;background:var(--purple-bg);color:var(--purple);border:2px solid var(--purple);border-radius:12px;padding:.7rem;font-family:var(--font);font-size:.88rem;font-weight:800;cursor:pointer;">📊 Kullanıcı Aktivitesi</button>
+    <div class="sheet-hdr"><div class="sheet-title" style="font-family:Helvetica,'Helvetica Neue',Arial,sans-serif;">⚙️ Ayarlar</div><button class="sheet-close" onclick="closeSheet('settingsOverlay')">✕</button></div>
+    <div style="padding:.5rem .9rem 1.5rem;font-family:Helvetica,'Helvetica Neue',Arial,sans-serif;">
+
+      <!-- Karanlık Mod -->
+      <div style="background:var(--card2);border-radius:14px;border:1.5px solid var(--sep);overflow:hidden;margin-bottom:.8rem;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:.9rem 1rem;">
+          <div style="font-size:1rem;font-weight:700;color:var(--text);">🌙 Koyu Tema</div>
+          <label style="position:relative;display:inline-block;width:48px;height:26px;">
+            <input type="checkbox" id="darkToggle" onchange="toggleDarkMode()" style="opacity:0;width:0;height:0;">
+            <span style="position:absolute;cursor:pointer;inset:0;background:#334155;border-radius:26px;transition:.3s;"></span>
+            <span id="darkToggleKnob" style="position:absolute;height:20px;width:20px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s;"></span>
+          </label>
         </div>
       </div>
 
-      <div style="text-align:center;font-size:.72rem;color:var(--text3);font-weight:600;padding:.3rem;">Sipariş Sistemi v1</div>
+      <!-- Şifre Değiştir -->
+      <div style="background:var(--card2);border-radius:14px;border:1.5px solid var(--sep);overflow:hidden;margin-bottom:.8rem;">
+        <div style="padding:.75rem 1rem;font-size:.85rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;border-bottom:1.5px solid var(--sep);">🔑 Şifre Değiştir</div>
+        <div style="padding:.7rem 1rem;">
+          <input type="password" id="curPassField" placeholder="Mevcut şifre" style="width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:.7rem 1rem;font-family:Helvetica,'Helvetica Neue',Arial,sans-serif;font-size:1rem;color:var(--text);outline:none;margin-bottom:.5rem;">
+          <input type="password" id="newPassField" placeholder="Yeni şifre" style="width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:.7rem 1rem;font-family:Helvetica,'Helvetica Neue',Arial,sans-serif;font-size:1rem;color:var(--text);outline:none;margin-bottom:.5rem;">
+          <input type="password" id="newPass2Field" placeholder="Yeni şifre tekrar" style="width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:.7rem 1rem;font-family:Helvetica,'Helvetica Neue',Arial,sans-serif;font-size:1rem;color:var(--text);outline:none;margin-bottom:.5rem;">
+          <button onclick="changePassword()" style="width:100%;background:#3b82f6;color:white;border:none;border-radius:10px;padding:.75rem;font-family:Helvetica,'Helvetica Neue',Arial,sans-serif;font-size:1rem;font-weight:700;cursor:pointer;">Şifreyi Güncelle</button>
+        </div>
+      </div>
+
+      <!-- Bildirim İzni -->
+      <div style="background:var(--card2);border-radius:14px;border:1.5px solid var(--sep);overflow:hidden;margin-bottom:.8rem;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:.9rem 1rem;">
+          <div style="font-size:1rem;font-weight:700;color:var(--text);">🔔 Bildirim İzni</div>
+          <button onclick="requestNotifPermission()" style="background:#3b82f6;color:white;border:none;border-radius:8px;padding:.5rem 1rem;font-family:Helvetica,'Helvetica Neue',Arial,sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;">İzin Ver</button>
+        </div>
+      </div>
+
+      <!-- YÖNETİCİ BÖLÜMÜ -->
+      <div id="adminSection" style="display:none;">
+        <div style="background:var(--card2);border-radius:14px;border:1.5px solid var(--sep);overflow:hidden;margin-bottom:.8rem;">
+          <div style="padding:.75rem 1rem;font-size:.85rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;border-bottom:1.5px solid var(--sep);">👥 Kullanıcı Yönetimi</div>
+          <div id="settingsUserList" style="padding:.4rem 0;"></div>
+          <div style="padding:.5rem 1rem .7rem;display:flex;flex-direction:column;gap:.5rem;">
+            <button onclick="openAddUser()" style="width:100%;background:#3b82f6;color:white;border:none;border-radius:10px;padding:.75rem;font-family:Helvetica,'Helvetica Neue',Arial,sans-serif;font-size:1rem;font-weight:700;cursor:pointer;">+ Kullanıcı Ekle</button>
+            <button onclick="openActivityLog()" style="width:100%;background:#0891b2;color:white;border:none;border-radius:10px;padding:.75rem;font-family:Helvetica,'Helvetica Neue',Arial,sans-serif;font-size:1rem;font-weight:700;cursor:pointer;">📊 Kullanıcı Aktivitesi</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;font-size:.78rem;color:var(--text3);padding:.3rem;">Sipariş Sistemi v1</div>
     </div>
   </div>
 </div>
@@ -440,8 +417,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 // ════════════════════════════════════════════
 // CONFIG
 // ════════════════════════════════════════════
-const GS_URL = 'https://script.google.com/macros/s/AKfycbzKGNhoaLqdrO7fIYYDEbdzQ8XuF30zDtx48BjINC5eIxNFXO7qYqEMP-XT4rV1RQmB/exec';
-
+const GS_URL = 'BURAYA_APPS_SCRIPT_URL_YAZIN';
 
 const USER_COLORS = {
   yonetici: '#6366f1',
@@ -515,7 +491,7 @@ const KB_KALINLIKLAR = ['Standart','Kalın','İnce'];
 const MAKARA_METRELER = ['250 m','500 m','1.000 m','3.000 m'];
 const SERIGRAFI_RENKLER = ['Siyah','Altın Yaldız','Gümüş','Diğer'];
 const SERIGRAFI_MAKARA = ['250 m','500 m','1.000 m'];
-const KB_UZUNLUKLAR = Array.from({length:91},(_,i)=>(i+1)*5+45).filter(v=>v<=500).map(v=>v+'mm');
+const KB_UZUNLUKLAR = Array.from({length:91},(_,i)=>(i*5)+50).filter(v=>v<=500).map(v=>v+'mm');
 // 50mm to 350mm step 5
 
 // ════════════════════════════════════════════
@@ -544,8 +520,7 @@ function ensureDefaultUsers(){
   if(!users.length){
     // Default kullanıcılar
     const defaults=[
-      {id:'yonetici',name:'Yönetici',role:'yonetici',email:'',pass:'biass2026',color:'#6366f1'},
-      {id:'oguzhan',name:'Oğuzhan',role:'fabrika',email:'oguzhan@biass.com.tr',pass:'',color:'#06b6d4'},
+      {id:'oguzhan',name:'Oğuzhan',role:'yonetici',email:'oguzhan@biass.com.tr',pass:'045743',color:'#06b6d4'},
       {id:'hamza',name:'Hamza',role:'fabrika',email:'hamzatajimuradow@gmail.com',pass:'',color:'#8b5cf6'},
       {id:'akif',name:'Akif',role:'merkez',email:'akifarici@biass.com.tr',pass:'',color:'#f59e0b'},
       {id:'ahmet',name:'Ahmet',role:'merkez',email:'ahmetarici@biass.com.tr',pass:'',color:'#10b981'},
@@ -613,7 +588,7 @@ function doLogin(){
   document.getElementById('mainApp').style.display='flex';
   document.getElementById('topDot').style.background=u.color;
   document.getElementById('topName').textContent=u.name;
-  if(u.role==='yonetici')document.getElementById('settingsTab').style.display='';
+  // settings always visible in topbar
   sessionStorage.setItem('bs_cur_user',u.id);
   loadActivity();
   loadFromServer().then(()=>{renderAll();updateBadges();startPolling();});
@@ -700,7 +675,7 @@ function buildOrderCard(o){
 
   const itemChips=(o.items||[]).map(i=>`<span class="order-item-chip">${catLabel(i.category)}</span>`).join('');
   const termin=o.termin?`<div class="order-termin">📅 Termin: ${o.termin}${o.terminNote?' — '+o.terminNote:''}</div>`:'';
-  const gonderimInfo=o.gonderimTarihi?`<div style="padding:.3rem 1rem .5rem 1.7rem;font-size:.75rem;font-weight:800;color:var(--purple);">🚚 Gönderim: ${o.gonderimTarihi}${o.gonderimNotu?' — '+o.gonderimNotu:''}</div>`:'';
+  const gonderimInfo=o.gonderimTarihi?`<div style="padding:.3rem 1rem .5rem 1.7rem;font-size:.75rem;font-weight:800;color:#0891b2;">🚚 Gönderim: ${o.gonderimTarihi}${o.gonderimNotu?' — '+o.gonderimNotu:''}</div>`:'';
   // Silme isteği uyarısı
   const deleteWarn=silmeIstegi?`<div style="margin:.3rem 1rem .5rem 1rem;background:var(--red-bg);border:1.5px solid var(--red);border-radius:10px;padding:.5rem .8rem;font-size:.75rem;font-weight:800;color:var(--red);">🗑 Silme onayı bekleniyor — ${o.deleteRequest.by}</div>`:'';
 
@@ -726,7 +701,7 @@ function buildOrderCard(o){
     </div>`;
   } else if((isFabrika||isYonetici)&&o.status==='hazir'){
     actions=`<div class="order-actions">
-      <button class="order-act-btn" style="background:var(--purple);color:white;" onclick="openGonderildiModal('${o.id}')">🚚 Gönderildi</button>
+      <button class="order-act-btn" style="background:#0891b2;color:white;" onclick="openGonderildiModal('${o.id}')">🚚 Gönderildi</button>
       ${silmeIstegi&&(isFabrika||isYonetici)?'<button class="order-act-btn" style="background:var(--green);color:white;" onclick="approveDelete(\''+o.id+'\')">✅ Silmeyi Onayla</button><button class="order-act-btn" style="background:var(--card2);color:var(--text3);border:1.5px solid var(--border);" onclick="rejectDelete(\''+o.id+'\')">❌ Reddet</button>':''}
       <button class="order-act-btn btn-detail" onclick="openDetail('${o.id}')">Detay</button>
     </div>`;
@@ -759,7 +734,7 @@ function buildOrderCard(o){
     ${termin}
     ${gonderimInfo}
     ${deleteWarn}
-    ${o.note?`<div style="padding:.3rem 1rem .6rem 1.7rem;font-size:.75rem;color:var(--text3);font-weight:600;">📝 ${o.note}</div>`:''}
+    ${(()=>{if(!o.note)return '';const c=o.note.includes('ACİL')?'#ef4444':o.note.includes('ÖNEMLİ')?'#d97706':'var(--text3)';return '<div style="padding:.3rem 1rem .6rem 1.7rem;font-size:.78rem;color:'+c+';font-weight:700;">📝 '+o.note+'</div>';})()}
     ${actions}
   </div>`;
 }
@@ -798,7 +773,7 @@ function openDetail(id){
   // Timeline
   html+=`<div class="detail-section"><div class="detail-hdr">Durum Geçmişi</div>`;
   (o.timeline||[]).forEach(t=>{
-    const colors={alinmadi:'var(--red)',alindi:'var(--yellow)',islemde:'var(--orange)',hazir:'var(--green)',gonderildi:'var(--purple)',iptal:'var(--red)',duzenlendi:'var(--blue)'};
+    const colors={alinmadi:'var(--red)',alindi:'var(--yellow)',islemde:'var(--orange)',hazir:'var(--green)',gonderildi:'#0891b2',iptal:'var(--red)',duzenlendi:'var(--blue)'};
     const tlabels={alinmadi:'Sipariş oluşturuldu',alindi:'Sipariş alındı',islemde:'İşleme alındı',hazir:'Hazır',gonderildi:'Gönderildi',iptal:'İptal edildi',duzenlendi:'Sipariş düzenlendi'};
     html+=`<div class="timeline-item"><div class="timeline-dot" style="background:${colors[t.status]||'var(--blue)'};"></div><div class="timeline-body"><div class="timeline-title">${tlabels[t.status]||t.status}</div><div class="timeline-date">${t.at} — ${t.byName||''}</div></div></div>`;
   });
@@ -948,7 +923,7 @@ function renderNotifs(){
   // Don't mark deleteRequest notifs as read — keep them visible until resolved
   data.forEach(n=>{if(!n.read&&n.type!=='deleteRequest'&&(isFabrika||isYonetici||n.toUser===curUser.id))n.read=true;});
   saveLocal();updateBadges();
-  const statusColors={alinmadi:'var(--red)',alindi:'var(--yellow)',islemde:'var(--orange)',hazir:'var(--green)',gonderildi:'var(--purple)',iptal:'var(--red)',duzenlendi:'var(--blue)',deleteRequest:'var(--red)',deleteApproved:'var(--green)',deleteRejected:'var(--text3)'};
+  const statusColors={alinmadi:'var(--red)',alindi:'var(--yellow)',islemde:'var(--orange)',hazir:'var(--green)',gonderildi:'#0891b2',iptal:'var(--red)',duzenlendi:'var(--blue)',deleteRequest:'var(--red)',deleteApproved:'var(--green)',deleteRejected:'var(--text3)'};
   el.innerHTML=data.map(n=>{
     const isDeleteReq=n.type==='deleteRequest'&&(curUser.role==='fabrika'||curUser.role==='yonetici');
     const order=orders.find(o=>o.id===n.orderId);
@@ -1042,7 +1017,7 @@ function buildSeffafLastikForm(){
     <div class="f-section"><label class="f-lbl">Ürün Seçimi</label><div class="option-grid" id="sl_urun" style="grid-template-columns:1fr 1fr;">${opts}</div></div>
     <div class="f-section"><label class="f-lbl">Varyasyon</label>${chipGroup('sl_renk',['Buzlu','Cam Gibi','Siyah'])}</div>
     <div class="f-section"><label class="f-lbl">Paketleme</label>${chipGroup('sl_paket',['Poşet','Makara'])}</div>
-    <div class="f-section"><label class="f-lbl">Sipariş Miktarı</label><div class="f-card"><div class="f-row"><span class="f-ico">📦</span><input type="text" id="sl_miktar" placeholder="Ör: 10.000 metre, 20.000 metre..."></div></div></div>`;
+    <div class="f-section"><label class="f-lbl">Sipariş Miktarı</label><div class="f-card"><div class="f-row"><span class="f-ico">📦</span><input type="text" id="sl_miktar" placeholder="Metre girin: 1.000, 5.000, 10.000..." list="sl_miktar_list" autocomplete="off"></div></div></div>`;
 }
 function buildFitilForm(){
   const opts=FITIL_URUNLER.map(u=>`<div class="option-chip" data-val="${u.olcu}" onclick="toggleChip('fitil_urun','${u.olcu}')" style="min-width:100px;">${u.olcu}<br><span style="font-size:.65rem;opacity:.7;">${u.metre}</span></div>`).join('');
@@ -1056,7 +1031,7 @@ function buildFitilForm(){
       </div>
     </div>
     <div class="f-section"><label class="f-lbl">Paketleme</label>${chipGroup('fitil_paket',['Poşet','Makara'])}</div>
-    <div class="f-section"><label class="f-lbl">Sipariş Miktarı</label><div class="f-card"><div class="f-row"><span class="f-ico">📦</span><input type="text" id="fitil_miktar" placeholder="Ör: 5.000 metre, 10.000 metre..."></div></div></div>
+    <div class="f-section"><label class="f-lbl">Sipariş Miktarı</label><div class="f-card"><div class="f-row"><span class="f-ico">📦</span><input type="text" id="fitil_miktar" placeholder="Metre girin: 1.000, 5.000, 10.000..." list="fitil_miktar_list" autocomplete="off"></div></div></div>
     <div class="f-section"><label class="f-lbl">Özel Not</label><div class="f-card"><div class="f-row"><span class="f-ico">📝</span><textarea id="fitil_not" placeholder="Özel not (opsiyonel)..." style="height:56px;resize:none;"></textarea></div></div></div>
     <div class="f-section"><label class="f-lbl">Fotoğraf (opsiyonel)</label>
       <div class="photo-area-sm" id="fitil_photos"><div class="photo-add-sm" onclick="triggerPhoto('fitil')">📷<span>Ekle</span></div></div>
@@ -1124,7 +1099,7 @@ function buildMakaraForm(){
     <div class="f-section"><label class="f-lbl">Ürün Seçimi</label><div class="option-grid" id="mak_urun">${opts}</div></div>
     <div class="f-section"><label class="f-lbl">Varyasyon</label>${chipGroup('mak_renk',['Buzlu','Cam Gibi','Siyah','Yarı Buzlu'])}</div>
     <div class="f-section"><label class="f-lbl">Makara Metresi</label>${chipGroup('mak_metre',MAKARA_METRELER)}</div>
-    <div class="f-section"><label class="f-lbl">Sipariş Miktarı</label><div class="f-card"><div class="f-row"><span class="f-ico">📦</span><input type="text" id="mak_miktar" placeholder="Ör: 2.500 metre, 5.000 metre..."></div></div></div>`;
+    <div class="f-section"><label class="f-lbl">Sipariş Miktarı</label><div class="f-card"><div class="f-row"><span class="f-ico">📦</span><input type="text" id="mak_miktar" placeholder="Metre girin: 250, 500, 1.000, 3.000..." list="mak_miktar_list" autocomplete="off"></div></div></div>`;
 }
 function buildSerigrafForm(){
   const opts=SERIGRAFI_URUNLER.map(u=>`<div class="option-chip" data-val="${u.kod}" onclick="toggleChip('ser_urun','${u.kod}')" style="min-width:120px;">${u.kod}<br><span style="font-size:.65rem;opacity:.7;">${u.olcu}</span></div>`).join('');
@@ -1137,7 +1112,7 @@ function buildSerigrafForm(){
     </div>
     <div class="f-section"><label class="f-lbl">Yazı Karakteri</label><div class="f-card"><div class="f-row"><span class="f-ico">🔤</span><input type="text" id="ser_karakter" placeholder="Yazı karakteri/fontu..."></div></div></div>
     <div class="f-section"><label class="f-lbl">Makara Seçeneği</label>${chipGroup('ser_makara',SERIGRAFI_MAKARA)}</div>
-    <div class="f-section"><label class="f-lbl">Sipariş Miktarı</label><div class="f-card"><div class="f-row"><span class="f-ico">📦</span><input type="text" id="ser_miktar" placeholder="Ör: 2.500 metre, 5.000 metre..."></div></div></div>
+    <div class="f-section"><label class="f-lbl">Sipariş Miktarı</label><div class="f-card"><div class="f-row"><span class="f-ico">📦</span><input type="text" id="ser_miktar" placeholder="Metre girin: 250, 500, 1.000..." list="ser_miktar_list" autocomplete="off"></div></div></div>
     <div class="f-section"><label class="f-lbl">Özel Not</label><div class="f-card"><div class="f-row"><span class="f-ico">📝</span><textarea id="ser_not" placeholder="Özel not (opsiyonel)..." style="height:56px;resize:none;"></textarea></div></div></div>
     <div class="f-section"><label class="f-lbl">Fotoğraf (opsiyonel)</label>
       <div class="photo-area-sm" id="ser_photos"><div class="photo-add-sm" onclick="triggerPhoto('ser')">📷<span>Ekle</span></div></div>
@@ -1472,13 +1447,51 @@ function startPolling(){
 function stopPolling(){if(pollTimer){clearInterval(pollTimer);pollTimer=null;}}
 
 function openSettings(){
-  renderSettingsUserList();
-  // Fill cancel order select
-  const sel=document.getElementById('cancelOrderSelect');
-  const active=orders.filter(o=>o.status!=='gonderildi'&&o.status!=='iptal');
-  sel.innerHTML='<option value="">-- Sipariş seçin --</option>'+
-    active.map(o=>`<option value="${o.id}">#${o.id} · ${o.createdByName} · ${o.status}</option>`).join('');
+  const adm=document.getElementById('adminSection');
+  if(adm)adm.style.display=(curUser&&curUser.role==='yonetici')?'block':'none';
+  if(curUser&&curUser.role==='yonetici')renderSettingsUserList();
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  const tog=document.getElementById('darkToggle');
+  const knob=document.getElementById('darkToggleKnob');
+  if(tog)tog.checked=isDark;
+  if(knob){knob.style.transform=isDark?'translateX(22px)':'translateX(0)';knob.style.background=isDark?'#3b82f6':'white';}
+  ['curPassField','newPassField','newPass2Field'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   showSheet('settingsOverlay');
+}
+function toggleDarkMode(){
+  const tog=document.getElementById('darkToggle');
+  const knob=document.getElementById('darkToggleKnob');
+  const isDark=tog&&tog.checked;
+  document.documentElement.setAttribute('data-theme',isDark?'dark':'light');
+  localStorage.setItem('sp_dark',isDark?'1':'0');
+  if(knob){knob.style.transform=isDark?'translateX(22px)':'translateX(0)';knob.style.background=isDark?'#3b82f6':'white';}
+}
+function changePassword(){
+  const cur=document.getElementById('curPassField')?.value||'';
+  const nw=document.getElementById('newPassField')?.value||'';
+  const nw2=document.getElementById('newPass2Field')?.value||'';
+  if(!curUser){showToast('⚠ Giriş yapınız');return;}
+  if(curUser.pass&&curUser.pass!==cur){showToast('⚠ Mevcut şifre yanlış');return;}
+  if(nw.length<3){showToast('⚠ Şifre en az 3 karakter olmalı');return;}
+  if(nw!==nw2){showToast('⚠ Şifreler eşleşmiyor');return;}
+  curUser.pass=nw;
+  const u=users.find(x=>x.id===curUser.id);
+  if(u)u.pass=nw;
+  localStorage.setItem(KU,JSON.stringify(users));
+  ['curPassField','newPassField','newPass2Field'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  logActivity('Şifre değiştirildi');
+  showToast('✅ Şifre güncellendi');
+}
+function requestNotifPermission(){
+  if('Notification' in window){
+    Notification.requestPermission().then(p=>showToast(p==='granted'?'✅ Bildirim izni verildi':'⚠ İzin reddedildi'));
+  }else{showToast('⚠ Bu tarayıcı bildirimleri desteklemiyor');}
+}
+function initDarkMode(){
+  const saved=localStorage.getItem('sp_dark');
+  if(saved==='1')document.documentElement.setAttribute('data-theme','dark');
+  else if(saved==='0')document.documentElement.setAttribute('data-theme','light');
+  else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.setAttribute('data-theme','dark');
 }
 function renderSettingsUserList(){
   const el=document.getElementById('settingsUserList');if(!el)return;
@@ -1608,7 +1621,7 @@ function handleProductPhoto(e){
     if(area){
       const idx=productPhotos[curPhotoTarget].length-1;
       const img=document.createElement('img');
-      img.src=src;img.className='photo-thumb-sm';
+      img.src=src;img.className='photo-thumb-sm';img.onclick=()=>zoomPhoto(img.src);
       img.onclick=()=>{
         productPhotos[curPhotoTarget].splice(idx,1);
         renderPhotoArea(curPhotoTarget);
@@ -1622,7 +1635,7 @@ function renderPhotoArea(target){
   const area=document.getElementById(target+'_photos');
   if(!area)return;
   const photos=productPhotos[target]||[];
-  area.innerHTML=photos.map((src,i)=>`<img src="${src}" class="photo-thumb-sm" onclick="removeProductPhoto('${target}',${i})" title="Kaldır">`).join('')
+  area.innerHTML=photos.map((src,i)=>`<img src="${src}" class="photo-thumb-sm" onclick="zoomPhoto('\${src}')" title="Kaldır">`).join('')
     +`<div class="photo-add-sm" onclick="triggerPhoto('${target}')">📷<span>Ekle</span></div>`;
 }
 function removeProductPhoto(target,i){
@@ -1636,6 +1649,8 @@ function nowStr(){
   return new Date().toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
 }
 function showSheet(id){
+  // scroll sheet to top
+  setTimeout(()=>{const s=document.querySelector('#'+id+' .sheet');if(s)s.scrollTop=0;},50);
   const el=document.getElementById(id);
   el.classList.add('show');
   // Scroll sheet content to top
@@ -1669,18 +1684,53 @@ window.addEventListener('load',()=>{
       document.getElementById('mainApp').style.display='flex';
       document.getElementById('topDot').style.background=u.color;
       document.getElementById('topName').textContent=u.name;
-      if(u.role==='yonetici')document.getElementById('settingsTab').style.display='';
+      // settings always visible in topbar
       loadFromServer().then(()=>{renderAll();updateBadges();startPolling();});
     }
   }
 });
 
 // ════════════════════════════════════════════
+
+function zoomPhoto(src){
+  const ov=document.createElement('div');
+  ov.className='photo-zoom-overlay';
+  ov.innerHTML='<img src="'+src+'">';
+  ov.onclick=()=>ov.remove();
+  document.body.appendChild(ov);
+}
+function addNoteTag(tag){
+  const el=document.getElementById('orderNote');
+  if(!el)return;
+  el.value=(el.value?el.value+' ':'')+tag;
+  el.focus();
+}
 // INIT
 // ════════════════════════════════════════════
 loadLocal();
 buildDD();
-// Auto dark mode via CSS media query (system-level)
+initDarkMode();
 </script>
+
+<datalist id="sl_miktar_list">
+  <option value="1.000 metre"><option value="2.000 metre"><option value="5.000 metre">
+  <option value="10.000 metre"><option value="20.000 metre"><option value="50.000 metre">
+</datalist>
+<datalist id="fitil_miktar_list">
+  <option value="1.000 metre"><option value="2.000 metre"><option value="5.000 metre">
+  <option value="10.000 metre"><option value="20.000 metre"><option value="50.000 metre">
+</datalist>
+<datalist id="mak_miktar_list">
+  <option value="250 metre"><option value="500 metre"><option value="1.000 metre">
+  <option value="3.000 metre"><option value="5.000 metre"><option value="10.000 metre">
+</datalist>
+<datalist id="ser_miktar_list">
+  <option value="250 metre"><option value="500 metre"><option value="1.000 metre">
+  <option value="2.500 metre"><option value="5.000 metre">
+</datalist>
+<datalist id="balen_miktar_list">
+  <option value="100 kasnak"><option value="50 kasnak"><option value="200 kasnak">
+  <option value="1.000 metre"><option value="5.000 metre">
+</datalist>
 </body>
 </html>
